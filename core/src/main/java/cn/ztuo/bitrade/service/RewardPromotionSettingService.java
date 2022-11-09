@@ -5,7 +5,6 @@ import com.querydsl.core.types.Predicate;
 import cn.ztuo.bitrade.constant.BooleanEnum;
 import cn.ztuo.bitrade.constant.PromotionRewardType;
 import cn.ztuo.bitrade.dao.RewardPromotionSettingDao;
-import cn.ztuo.bitrade.entity.QRewardPromotionSetting;
 import cn.ztuo.bitrade.entity.RewardPromotionSetting;
 import cn.ztuo.bitrade.service.Base.BaseService;
 import cn.ztuo.bitrade.service.Base.TopBaseService;

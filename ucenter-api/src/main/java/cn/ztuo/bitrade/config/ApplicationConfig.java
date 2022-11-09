@@ -35,7 +35,7 @@ public class ApplicationConfig  extends WebMvcConfigurerAdapter {
     public ResourceBundleMessageSource getMessageSource() {
         ResourceBundleMessageSource resourceBundleMessageSource = new ResourceBundleMessageSource();
         resourceBundleMessageSource.setDefaultEncoding("UTF-8");
-        resourceBundleMessageSource.setBasenames("i18n/messages", "i18n/ValidationMessages");
+        resourceBundleMessageSource.setBasenames("src/main/resources/i18n/messages", "src/main/resources/i18n/ValidationMessages");
         resourceBundleMessageSource.setCacheSeconds(3600);
         return resourceBundleMessageSource;
     }

@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -40,6 +42,18 @@ public class DateUtil {
 
     public static String dateTo3S(Date date){
         return YYYY_MM_DD_MM_HH_SS_SSS.format(date);
+    }
+
+
+    private static final DateTimeFormatter DTF = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+
+
+    public static String format(LocalDateTime ldt) {
+        return ldt.format(DTF);
+    }
+
+    public static long format(Date date){
+        return date.getTime();
     }
 
     /**

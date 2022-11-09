@@ -78,6 +78,11 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.squareup.okhttp3</groupId>
+			<artifactId>okhttp</artifactId>
+			<version>4.2.1</version>
+		</dependency>
+		<dependency>
 			<groupId>cn.ztuo.bitrade</groupId>
 			<artifactId>exchange-core</artifactId>
 			<version>1.0</version>
@@ -102,6 +107,9 @@
 			<version>2.0.1</version>
 		</dependency>
 	</dependencies>
+
+
+
 	<profiles>
 		<profile>
 			<id>dev</id>
@@ -120,7 +128,7 @@
 		<profile>
 			<id>test</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<activeByDefault>false</activeByDefault>
 			</activation>
 			<build>
 				<resources>
@@ -135,7 +143,7 @@
 			<id>prod</id>
 			<!--<properties> <project.profile>application-prod</project.profile> </properties> -->
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<activeByDefault>false</activeByDefault>
 			</activation>
 			<build>
 				<resources>
@@ -146,6 +154,9 @@
 			</build>
 		</profile>
 	</profiles>
+
+
+
 	<build>
 		<finalName>market</finalName>
 		<plugins>
@@ -165,6 +176,9 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<includeSystemScope>true</includeSystemScope>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

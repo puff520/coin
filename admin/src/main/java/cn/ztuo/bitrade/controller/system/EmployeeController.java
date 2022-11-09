@@ -104,7 +104,7 @@ public class EmployeeController extends BaseAdminController {
 //        String password = (String) httpSession.getAttribute("password");
 //        String phone = (String) httpSession.getAttribute("phone");
         String username = "root";
-        String password = "123456";
+        String password = "985eb5b028065701341a478a9215e7b2";
         String phone = "18689261991";
          code = "18689261991";
         Assert.notNull(code, "请输入验证码");

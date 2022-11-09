@@ -258,7 +258,7 @@ public class RegisterController {
         model.put("host", host);
         model.put("name", company);
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_26);
-        cfg.setClassForTemplateLoading(this.getClass(), "/templates");
+        cfg.setClassForTemplateLoading(this.getClass(), "/src/main/resources/templates");
         Template template = cfg.getTemplate("activateEmail.ftl");
         String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
         helper.setText(html, true);
@@ -299,15 +299,15 @@ public class RegisterController {
 //        isTrue(memberService.userPromotionCodeIsExist(loginByPhone.getPromotion()),localeMessageSourceService.getMessage("USER_PROMOTION_CODE_EXISTS"));
         //校验是否通过验证码 短信上行
         //isTrue(verifier.verify(loginByPhone.getValidate(),""),localeMessageSourceService.getMessage("VERIFICATION_CODE_INCORRECT"));
-        //腾讯防水注册校验
-        isTrue(gtestCon.watherProof(loginByPhone.getTicket(),loginByPhone.getRandStr(),ip),localeMessageSourceService.getMessage("VERIFICATION_PICTURE_NOT_CORRECT"));
-        // 换种校验方式
-        notNull(code, localeMessageSourceService.getMessage("VERIFICATION_CODE_NOT_EXISTS"));
-        if (!code.toString().equals(loginByPhone.getCode())) {
-            return error(localeMessageSourceService.getMessage("VERIFICATION_CODE_INCORRECT"));
-        } else {
-            valueOperations.getOperations().delete(SysConstant.PHONE_REG_CODE_PREFIX + phone);
-        }
+//        //腾讯防水注册校验
+//        isTrue(gtestCon.watherProof(loginByPhone.getTicket(),loginByPhone.getRandStr(),ip),localeMessageSourceService.getMessage("VERIFICATION_PICTURE_NOT_CORRECT"));
+//        // 换种校验方式
+//        notNull(code, localeMessageSourceService.getMessage("VERIFICATION_CODE_NOT_EXISTS"));
+//        if (!code.toString().equals(loginByPhone.getCode())) {
+//            return error(localeMessageSourceService.getMessage("VERIFICATION_CODE_INCORRECT"));
+//        } else {
+//            valueOperations.getOperations().delete(SysConstant.PHONE_REG_CODE_PREFIX + phone);
+//        }
         //不可重复随机数
         String loginNo = String.valueOf(idWorkByTwitter.nextId());
         //盐
@@ -479,7 +479,7 @@ public class RegisterController {
         Map<String, Object> model = new HashMap<>(16);
         model.put("code", code);
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_26);
-        cfg.setClassForTemplateLoading(this.getClass(), "/templates");
+        cfg.setClassForTemplateLoading(this.getClass(), "/src/main/resources/templates");
         Template template = cfg.getTemplate("bindCodeEmail.ftl");
         String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
         helper.setText(html, true);
@@ -530,7 +530,7 @@ public class RegisterController {
         Map<String, Object> model = new HashMap<>(16);
         model.put("code", code);
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_26);
-        cfg.setClassForTemplateLoading(this.getClass(), "/templates");
+        cfg.setClassForTemplateLoading(this.getClass(), "/src/main/resources/templates");
         Template template = cfg.getTemplate("addAddressCodeEmail.ftl");
         String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
         helper.setText(html, true);
@@ -570,7 +570,7 @@ public class RegisterController {
         Map<String, Object> model = new HashMap<>(16);
         model.put("code", code);
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_26);
-        cfg.setClassForTemplateLoading(this.getClass(), "/templates");
+        cfg.setClassForTemplateLoading(this.getClass(), "/src/main/resources/templates");
         Template template = cfg.getTemplate("resetPasswordCodeEmail.ftl");
         String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
         helper.setText(html, true);
