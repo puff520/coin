@@ -1,0 +1,116 @@
+{
+  "hints": [],
+  "groups": [
+    {
+      "sourceType": "com.aqmd.netty.configuration.NettyProperties",
+      "name": "aqmd.netty",
+      "type": "com.aqmd.netty.configuration.NettyProperties"
+    }
+  ],
+  "properties": [
+    {
+      "sourceType": "com.aqmd.netty.configuration.NettyProperties",
+      "defaultValue": 0,
+      "name": "aqmd.netty.boss-thread-size",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "com.aqmd.netty.configuration.NettyProperties",
+      "defaultValue": 0,
+      "name": "aqmd.netty.both-idle",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "com.aqmd.netty.configuration.NettyProperties",
+      "defaultValue": 0,
+      "name": "aqmd.netty.deal-handler-thread-size",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "com.aqmd.netty.configuration.NettyProperties",
+      "defaultValue": 0,
+      "name": "aqmd.netty.default-timeout",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "com.aqmd.netty.configuration.NettyProperties",
+      "name": "aqmd.netty.direct-access-command",
+      "description": "允许直接访问系统的指令",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.aqmd.netty.configuration.NettyProperties",
+      "defaultValue": 0,
+      "name": "aqmd.netty.direct-access-flag",
+      "description": "是否启用直接访问",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "com.aqmd.netty.configuration.NettyProperties",
+      "defaultValue": 0,
+      "name": "aqmd.netty.max-frame-length",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "com.aqmd.netty.configuration.NettyProperties",
+      "defaultValue": 0,
+      "name": "aqmd.netty.max-timeout",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "com.aqmd.netty.configuration.NettyProperties",
+      "defaultValue": 0,
+      "name": "aqmd.netty.max-timeout-interval",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "com.aqmd.netty.configuration.NettyProperties",
+      "defaultValue": 0,
+      "name": "aqmd.netty.packet-header-length",
+      "description": "包头表示包长度占的长度",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "com.aqmd.netty.configuration.NettyProperties",
+      "defaultValue": 0,
+      "name": "aqmd.netty.port",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "com.aqmd.netty.configuration.NettyProperties",
+      "defaultValue": 0,
+      "name": "aqmd.netty.reader-idle",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "com.aqmd.netty.configuration.NettyProperties",
+      "name": "aqmd.netty.service-logger-level",
+      "type": "java.lang.String"
+    },
+    {
+      "sourceType": "com.aqmd.netty.configuration.NettyProperties",
+      "defaultValue": 0,
+      "name": "aqmd.netty.websocket-flag",
+      "description": "是否启用websocket",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "com.aqmd.netty.configuration.NettyProperties",
+      "defaultValue": 0,
+      "name": "aqmd.netty.websocket-port",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "com.aqmd.netty.configuration.NettyProperties",
+      "defaultValue": 0,
+      "name": "aqmd.netty.worker-thread-size",
+      "type": "java.lang.Integer"
+    },
+    {
+      "sourceType": "com.aqmd.netty.configuration.NettyProperties",
+      "defaultValue": 0,
+      "name": "aqmd.netty.writer-idle",
+      "type": "java.lang.Integer"
+    }
+  ]
+}
