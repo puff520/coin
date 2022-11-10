@@ -1,8 +1,9 @@
 package cn.ztuo.bitrade.config;
 
 import cn.ztuo.bitrade.core.AdminRealm;
+import cn.ztuo.bitrade.shiro.RedisSessionDAO;
+import cn.ztuo.bitrade.shiro.ShiroSessionManager;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.SessionManager;
@@ -12,13 +13,13 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
-import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 
+import javax.annotation.Resource;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -30,14 +31,33 @@ import java.util.Map;
 @Configuration
 public class ShiroConfig {
 
+    @Resource
+    private RedisSessionDAO redisSessionDAO;
 
-
-    @Bean
-    public SessionManager sessionManager(){
-        //这里创建的是自定义sessionManager  CustomSessionManager
-        DefaultWebSessionManager securityManager = new DefaultWebSessionManager();
-        return  securityManager;
-
+    /**
+     * 自定义sessionManager
+     *
+     * @param simpleCookie
+     * @return
+     */
+    @Bean("sessionManager")
+    public SessionManager sessionManager(@Qualifier("sessionIdCookie") SimpleCookie simpleCookie) {
+        ShiroSessionManager sessionManager = new ShiroSessionManager();
+        //全局会话超时时间（单位毫秒），默认30分钟  暂时设置为12h
+        sessionManager.setGlobalSessionTimeout(1000 * 60 * 60 * 12);
+        //是否开启删除无效的session对象  默认为true
+        sessionManager.setDeleteInvalidSessions(true);
+        //配置监听session，缓存包含用户信息的session到redis中
+        sessionManager.setSessionDAO(redisSessionDAO);
+        //是否开启定时调度器进行检测过期session 默认为true
+        sessionManager.setSessionValidationSchedulerEnabled(true);
+        //设置session失效的扫描时间, 清理用户直接关闭浏览器造成的孤立会话 默认为 1个小时
+        //设置该属性 就不需要设置 ExecutorServiceSessionValidationScheduler
+        //底层也是默认自动调用ExecutorServiceSessionValidationScheduler
+        sessionManager.setSessionValidationInterval(1000 * 60 * 30);
+        //配置保存sessionId的cookie
+        sessionManager.setSessionIdCookie(simpleCookie);
+        return sessionManager;
     }
 
     /**
@@ -48,8 +68,7 @@ public class ShiroConfig {
      */
 
     @Bean(name = "shiroFilter")
-    @DependsOn({"securityManager"})
-    public ShiroFilterFactoryBean shirFilter(@Qualifier("securityManager") SecurityManager securityManager) {
+    public ShiroFilterFactoryBean shirFilter(SecurityManager securityManager) {
         log.info("ShiroConfiguration.shirFilter()");
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
@@ -63,16 +82,61 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
         /*shiroFilterFactoryBean.setU("/403");*/
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
-
         return shiroFilterFactoryBean;
     }
 
+
+    /**
+     * 设置rememberMe  Cookie 7天
+     *
+     * @return
+     */
+    @Bean(name = "sessionIdCookie")
+    public SimpleCookie getSessionIdCookie() {
+        SimpleCookie simpleCookie = new SimpleCookie();
+        simpleCookie.setName("SHIROSESSIONID");
+        simpleCookie.setHttpOnly(true);
+        simpleCookie.setMaxAge(7 * 24 * 60 * 60);
+        return simpleCookie;
+    }
+
+
+    /**
+     * cookie 管理器
+     *
+     * @return
+     */
+    @Bean(name = "cookieRememberMeManager")
+    @DependsOn({"sessionIdCookie"})
+    public CookieRememberMeManager getCookieRememberMeManager(SimpleCookie simpleCookie) {
+        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
+        cookieRememberMeManager.setCookie(simpleCookie);
+        cookieRememberMeManager.setCipherKey(Base64.decode("2AvVhdsgUs0FSA3SDFAdag=="));
+        return cookieRememberMeManager;
+    }
+
+
+    /**
+     * 这里把 前面两个bean 传入到 manager中
+     *
+     * @param sessionManager
+     * @return
+     */
+    @Bean("securityManager")
+    public SecurityManager securityManager(AdminRealm realm,SessionManager sessionManager,CookieRememberMeManager cookieRememberMeManager ) {
+        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        //设置realm.
+        securityManager.setRealm(realm);
+        //验证策略
+        // 自定义session管理 使用redis
+        securityManager.setSessionManager(sessionManager);
+        securityManager.setRememberMeManager(cookieRememberMeManager);
+        return securityManager;
+    }
+
+
     /**
      * Shiro生命周期处理器
-     * <p>
-     * /*1.LifecycleBeanPostProcessor，这是个DestructionAwareBeanPostProcessor的子类，
-     * 负责org.apache.shiro.util.Initializable类型bean的生命周期的，初始化和销毁。
-     * 主要是AuthorizingRealm类的子类，以及EhCacheManager类。
      *
      * @return
      */
@@ -82,99 +146,8 @@ public class ShiroConfig {
         return lifecycleBeanPostProcessor;
     }
 
-
     /**
-     * shiro缓存管理器;
-     * 需要注入对应的其它的实体类中：
-     * 安全管理器：securityManager
-     *
-     * @return
-     */
-    @Bean(name = "ehCacheManager")
-    @DependsOn("lifecycleBeanPostProcessor")
-    public EhCacheManager ehCacheManager() {
-        log.info("ShiroConfiguration.getEhCacheManager()");
-        EhCacheManager cacheManager = new EhCacheManager();
-        cacheManager.setCacheManagerConfigFile("classpath:ehcache-shiro.xml");
-        return cacheManager;
-    }
-
-    @Bean(name = "adminRealm")
-    @DependsOn("lifecycleBeanPostProcessor")
-    public AdminRealm adminRealm(EhCacheManager ehCacheManager) {
-        AdminRealm adminRealm = new AdminRealm();
-        //为确保密码安全，可以定义hash算法，（此处未做任何hash，直接用密码匹配）
-        /*HashedCredentialsMatcher matcher = new HashedCredentialsMatcher();
-        matcher.setHashAlgorithmName("SHA-1");
-        matcher.setHashIterations(2);
-        matcher.setStoredCredentialsHexEncoded(true);
-        adminRealm.setCredentialsMatcher(matcher);*/
-        adminRealm.setCacheManager(ehCacheManager);
-        return adminRealm;
-    }
-
-    /**
-     * 设置rememberMe  Cookie 7天
-     *
-     * @return
-     */
-    @Bean(name = "simpleCookie")
-    public SimpleCookie getSimpleCookie() {
-        SimpleCookie simpleCookie = new SimpleCookie();
-        simpleCookie.setName("rememberMe");
-        simpleCookie.setHttpOnly(true);
-        simpleCookie.setMaxAge(7 * 24 * 60 * 60);
-        return simpleCookie;
-    }
-
-    /**
-     * cookie 管理器
-     *
-     * @return
-     */
-    @Bean(name = "cookieRememberMeManager")
-    @DependsOn({"simpleCookie"})
-    public CookieRememberMeManager getCookieRememberMeManager(SimpleCookie simpleCookie) {
-        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
-        cookieRememberMeManager.setCookie(simpleCookie);
-        /**
-         * 设置 rememberMe cookie 的密钥 ，不设置 很可能：javax.crypto.BadPaddingException: Given final block not properly padded
-         */
-        cookieRememberMeManager.setCipherKey(Base64.decode("2AvVhdsgUs0FSA3SDFAdag=="));
-        return cookieRememberMeManager;
-    }
-
-    /**
-     * @param realm
-     * @param ehCacheManager
-     * @param cookieRememberMeManager
-     * @return
-     * @DependOn :在初始化 defaultWebSecurityManager 实例前 强制先初始化 adminRealm ，ehCacheManager。。。。。
-     */
-
-    @Bean(name = "securityManager")
-    @DependsOn({"adminRealm", "ehCacheManager", "cookieRememberMeManager"})
-    public DefaultWebSecurityManager securityManager(AdminRealm realm, EhCacheManager ehCacheManager, CookieRememberMeManager cookieRememberMeManager) {
-        DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
-        //设置realm.
-        defaultWebSecurityManager.setRealm(realm);
-        defaultWebSecurityManager.setCacheManager(ehCacheManager);
-        defaultWebSecurityManager.setSessionManager(sessionManager());
-        defaultWebSecurityManager.setRememberMeManager(cookieRememberMeManager);
-        return defaultWebSecurityManager;
-    }
-
-
-    /**
-     * 开启Shiro的注解(如@RequiresRoles,@RequiresPermissions),
-     * 需借助SpringAOP扫描使用Shiro注解的类,并在必要时进行安全逻辑验证 * 配置以下两个bean
-     * (DefaultAdvisorAutoProxyCreator(可选)和AuthorizationAttributeSourceAdvisor)即可实现此功能 * @return
-     */
-
-    /**
-     * 由Advisor决定对哪些类的方法进行AOP代理。
-     *
-     * @return
+     * 开启Shiro的注解(如@RequiresRoles,@RequiresPermissions),需借助SpringAOP扫描使用Shiro注解的类,并在必要时进行安全逻辑验证
      */
     @Bean
     @DependsOn("lifecycleBeanPostProcessor")
@@ -184,6 +157,14 @@ public class ShiroConfig {
         return defaultAAP;
     }
 
+
+    /**
+     * 开启shiro aop注解支持.
+     * 使用代理方式;所以需要开启代码支持;
+     *
+     * @param securityManager
+     * @return
+     */
     @Bean
     @DependsOn("securityManager")
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(@Qualifier("securityManager") SecurityManager securityManager) {
@@ -191,5 +172,4 @@ public class ShiroConfig {
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
     }
-
 }

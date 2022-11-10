@@ -35,11 +35,11 @@ public class AnnouncementService extends BaseService<Announcement> {
     }
 
     public Announcement findById(Long id) {
-        return announcementDao.findOne(id);
+        return announcementDao.findById(id).get();
     }
 
     public void deleteById(Long id) {
-        announcementDao.delete(id);
+        announcementDao.deleteById(id);
     }
 
     @Transactional(rollbackFor = Exception.class)

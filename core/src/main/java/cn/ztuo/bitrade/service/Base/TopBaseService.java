@@ -1,5 +1,6 @@
 package cn.ztuo.bitrade.service.Base;
 
+import cn.ztuo.bitrade.pagination.Criteria;
 import com.querydsl.core.types.Predicate;
 
 import cn.ztuo.bitrade.ability.CreateAbility;
@@ -43,7 +44,7 @@ public class TopBaseService<E, D extends BaseDao> {
 
 
     public E findById(Serializable id) {
-        return (E) dao.findOne(id);
+        return (E) dao.findById(id);
     }
 
     public List<E> findAll() {
@@ -112,8 +113,8 @@ public class TopBaseService<E, D extends BaseDao> {
      * @return
      */
     public Pagenation<E> pageQuery(Pagenation pagenation, Predicate predicate) {
-        Sort sort = new Sort(pagenation.getPageParam().getDirection(), pagenation.getPageParam().getOrders());
-        Pageable pageable = new PageRequest(pagenation.getPageParam().getPageNo() - 1, pagenation.getPageParam().getPageSize(), sort);
+        Sort sort =  Criteria.sortStatic2(pagenation.getPageParam().getDirection(),pagenation.getPageParam().getOrders());
+        Pageable pageable =  PageRequest.of(pagenation.getPageParam().getPageNo() - 1, pagenation.getPageParam().getPageSize(), sort);
         Page<E> page = dao.findAll(predicate, pageable);
         return pagenation.setData(page.getContent(), page.getTotalElements(), page.getTotalPages());
     }

@@ -1,7 +1,6 @@
 package cn.ztuo.bitrade.service;
 
 import com.mongodb.BasicDBObject;
-import com.mongodb.Cursor;
 import com.mongodb.DBObject;
 
 import cn.ztuo.bitrade.dao.OrderDetailAggregationRepository;

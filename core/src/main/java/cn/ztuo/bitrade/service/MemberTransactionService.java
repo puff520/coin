@@ -22,6 +22,7 @@ import cn.ztuo.bitrade.vo.MemberTransactionVO;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -40,6 +41,8 @@ import java.util.Map;
 public class MemberTransactionService extends BaseService {
     @Autowired
     private MemberTransactionDao transactionDao;
+
+    @Lazy
     @Autowired
     private MemberWalletService walletService;
 
@@ -83,7 +86,7 @@ public class MemberTransactionService extends BaseService {
 
 
     public MemberTransaction findOne(Long id) {
-        return transactionDao.findOne(id);
+        return transactionDao.findById(id).get();
     }
 
 
@@ -109,9 +112,9 @@ public class MemberTransactionService extends BaseService {
 
     public Page<MemberTransaction> queryByMember(Long uid, Integer pageNo, Integer pageSize, TransactionType type) {
         //排序方式 (需要倒序 这样    Criteria.sort("id","createTime.desc") ) //参数实体类为字段名
-        Sort orders = Criteria.sortStatic("createTime.desc");
+        Sort orders = Sort.by("createTime").descending();
         //分页参数
-        PageRequest pageRequest = new PageRequest(pageNo, pageSize, orders);
+        PageRequest pageRequest =  PageRequest.of(pageNo, pageSize, orders);
         //查询条件
         Criteria<MemberTransaction> specification = new Criteria<MemberTransaction>();
         specification.add(Restrictions.eq("memberId", uid, false));
@@ -121,9 +124,9 @@ public class MemberTransactionService extends BaseService {
 
     public Page<MemberTransaction> queryByMember(Long uid, Integer pageNo, Integer pageSize,TransactionType type,String startDate,String endDate,String symbol) throws ParseException {
         //排序方式 (需要倒序 这样    Criteria.sort("id","createTime.desc") ) //参数实体类为字段名
-        Sort orders = Criteria.sortStatic("createTime.desc");
+        Sort orders = Sort.by("createTime").descending();
         //分页参数
-        PageRequest pageRequest = new PageRequest(pageNo-1, pageSize, orders);
+        PageRequest pageRequest =  PageRequest.of(pageNo-1, pageSize, orders);
         //查询条件
         Criteria<MemberTransaction> specification = new Criteria<MemberTransaction>();
         specification.add(Restrictions.eq("memberId", uid, false));

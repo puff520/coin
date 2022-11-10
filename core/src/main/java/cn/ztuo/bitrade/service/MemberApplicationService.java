@@ -77,7 +77,7 @@ public class MemberApplicationService extends BaseService {
     }
 
     public MemberApplication findOne(Long id) {
-        return memberApplicationDao.findOne(id);
+        return memberApplicationDao.findById(id).get();
     }
 
     public MemberApplication save(MemberApplication memberApplication) {
@@ -230,7 +230,7 @@ public class MemberApplicationService extends BaseService {
         two.setLevel(PromotionLevel.TWO);
         memberPromotionService.save(two);
         if (member2.getInviterId() != null) {
-            Member member3 = memberDao.findOne(member2.getInviterId());
+            Member member3 = memberDao.findById(member2.getInviterId()).get();
             member3.setThirdLevel(member3.getThirdLevel() + 1);
         }
     }

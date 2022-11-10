@@ -43,8 +43,8 @@ public class RewardRecordService extends BaseService {
     }
 
     public Page<RewardRecord> queryRewardPromotionPage(int pageNo, int pageSize, Member member) {
-        Sort sort = new Sort(new Sort.Order(Sort.Direction.DESC, "id"));
-        Pageable pageable = new PageRequest(pageNo - 1, pageSize, sort);
+        Sort orders = Sort.by("id").descending();
+        Pageable pageable =  PageRequest.of(pageNo - 1, pageSize, orders);
 
         ArrayList<BooleanExpression> booleanExpressions = new ArrayList<>();
 

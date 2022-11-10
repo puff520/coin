@@ -25,8 +25,6 @@ import javax.annotation.Resource;
 @RequestMapping("finance/exchange-transaction")
 public class ExchangeTransactionController extends BaseController {
 
-    @Resource(name = "newMongoTemplate")
-    private MongoTemplate mongoTemplate;
 
     @Autowired
     private ExchangeOrderService exchangeOrderService;

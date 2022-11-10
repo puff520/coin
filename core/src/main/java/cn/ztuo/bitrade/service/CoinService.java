@@ -67,7 +67,7 @@ public class CoinService extends BaseService {
     }
 
     public Coin findOne(String name) {
-        return coinDao.findOne(name);
+        return coinDao.findById(name).get();
     }
 
     public Coin findByUnit(String unit) {
@@ -94,9 +94,9 @@ public class CoinService extends BaseService {
 
     public Page<Coin> pageQuery(Integer pageNo, Integer pageSize) {
         //排序方式 (需要倒序 这样    Criteria.sort("id","createTime.desc") ) //参数实体类为字段名
-        Sort orders = Criteria.sortStatic("sort");
+        Sort orders = Sort.by("sort");
         //分页参数
-        PageRequest pageRequest = new PageRequest(pageNo, pageSize, orders);
+        PageRequest pageRequest =  PageRequest.of(pageNo, pageSize, orders);
         //查询条件
         Criteria<Coin> specification = new Criteria<Coin>();
         return coinDao.findAll(specification, pageRequest);
@@ -112,7 +112,7 @@ public class CoinService extends BaseService {
 
 
     public void deleteOne(String name) {
-        coinDao.delete(name);
+        coinDao.deleteById(name);
     }
 
     /**

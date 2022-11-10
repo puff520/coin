@@ -17,12 +17,12 @@ public class HuobiComponent {
     @Autowired
     private HuobiMainService service;
 
-//    @PostConstruct
+    @PostConstruct
     public void run() {
         service.run();
     }
 
-//    @Scheduled(cron = "0 0 */1 * * *")
+    @Scheduled(cron = "0 0 */1 * * *")
     public void doSub() {
         try {
             service.refreshSubChannel();

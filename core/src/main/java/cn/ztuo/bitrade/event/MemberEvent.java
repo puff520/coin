@@ -114,7 +114,7 @@ public class MemberEvent {
         one.setLevel(PromotionLevel.ONE);
         memberPromotionService.save(one);
         if (member1.getInviterId() != null) {
-            Member member2 = memberDao.findOne(member1.getInviterId());
+            Member member2 = memberDao.findById(member1.getInviterId()).get();
             //直接发放奖励  跟是否实名无关
             promotionLevelTwo(rewardPromotionSetting, member2, member);
             if (needRealName == 0) {
@@ -153,7 +153,7 @@ public class MemberEvent {
         two.setLevel(PromotionLevel.TWO);
         memberPromotionService.save(two);
         if (member2.getInviterId() != null) {
-            Member member3 = memberDao.findOne(member2.getInviterId());
+            Member member3 = memberDao.findById(member2.getInviterId()).get();
             member3.setThirdLevel(member3.getThirdLevel() + 1);
         }
     }

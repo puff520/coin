@@ -28,8 +28,8 @@ public class TransferRecordService extends BaseService {
 
     @Transactional(readOnly = true)
     public Page<TransferRecord> findAllByMemberId(Long memberId, int page, int pageSize) {
-        Sort orders = Criteria.sortStatic("id.desc");
-        PageRequest pageRequest = new PageRequest(page, pageSize, orders);
+        Sort orders = Sort.by("id").descending();
+        PageRequest pageRequest =  PageRequest.of(page, pageSize, orders);
         Criteria<TransferRecord> specification = new Criteria<>();
         specification.add(Restrictions.eq("memberId", memberId, false));
         return transferRecordDao.findAll(specification, pageRequest);

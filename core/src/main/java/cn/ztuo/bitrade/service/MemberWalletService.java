@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
@@ -356,7 +357,7 @@ public class MemberWalletService extends BaseService {
     public MemberWallet findOneByCoinNameAndMemberId(String coinName, long memberId) {
         BooleanExpression and = QMemberWallet.memberWallet.coin.name.eq(coinName)
                 .and(QMemberWallet.memberWallet.memberId.eq(memberId));
-        return memberWalletDao.findOne(and);
+        return memberWalletDao.findOne(and).get();
     }
 
     public Page<MemberWalletDTO> joinFind(List<Predicate> predicates,QMember qMember ,QMemberWallet qMemberWallet,PageModel pageModel) {

@@ -7,12 +7,13 @@ import com.aqmd.netty.entity.RequestPacket;
 import com.aqmd.netty.entity.ResponsePacket;
 import com.aqmd.netty.exception.NettyException;
 import io.netty.channel.ChannelHandlerContext;
+import org.springframework.util.CollectionUtils;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
-import org.apache.commons.collections.CollectionUtils;
 
 public class DefaultFilterChain implements FilterChain {
    private List<HawkFilterValue> filters = new ArrayList();

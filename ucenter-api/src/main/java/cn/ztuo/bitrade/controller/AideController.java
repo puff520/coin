@@ -2,7 +2,6 @@ package cn.ztuo.bitrade.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.netflix.discovery.converters.Auto;
 
 import cn.ztuo.bitrade.constant.Platform;
 import cn.ztuo.bitrade.constant.SysAdvertiseLocation;

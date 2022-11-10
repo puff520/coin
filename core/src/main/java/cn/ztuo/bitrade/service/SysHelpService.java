@@ -52,17 +52,17 @@ public class SysHelpService extends BaseService {
     }
 
     public SysHelp findOne(Long id) {
-        return sysHelpDao.findOne(id);
+        return sysHelpDao.findById(id).get();
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void deleteBatch(Long[] ids) {
         for (Long id : ids) {
-            sysHelpDao.delete(id);
+            sysHelpDao.deleteById(id);
         }
     }
 
-    public int getMaxSort(){
+    public int getMaxSort() {
         return sysHelpDao.findMaxSort();
     }
 
@@ -97,48 +97,47 @@ public class SysHelpService extends BaseService {
 
     /**
      * 根据分类分页查询
+     *
      * @param pageNo
      * @param pageSize
      * @param cate
      * @return
      */
-    public Page<SysHelp> findByCondition(int pageNo,int pageSize,SysHelpClassification cate){
-        Sort sort = new Sort(new Sort.Order(Sort.Direction.DESC, "sort"));
-        Pageable pageable = new PageRequest(pageNo - 1, pageSize, sort);
+    public Page<SysHelp> findByCondition(int pageNo, int pageSize, SysHelpClassification cate) {
+        Sort sort = Sort.by("sort").descending();
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
         Specification specification = new Specification() {
             List<javax.persistence.criteria.Predicate> predicates = new ArrayList<>();
 
             @Override
             public javax.persistence.criteria.Predicate toPredicate(Root root, CriteriaQuery criteriaQuery, CriteriaBuilder criteriaBuilder) {
-                predicates.add(criteriaBuilder.equal(root.get("sysHelpClassification"),cate));
+                predicates.add(criteriaBuilder.equal(root.get("sysHelpClassification"), cate));
                 return criteriaBuilder.and(predicates.toArray(new javax.persistence.criteria.Predicate[predicates.size()]));
             }
         };
-        return sysHelpDao.findAll(specification,pageable);
+        return sysHelpDao.findAll(specification, pageable);
     }
 
-    public List<SysHelp> getgetCateTops(String cate){
+    public List<SysHelp> getgetCateTops(String cate) {
         return sysHelpDao.getCateTop(cate);
     }
 
 
-    public Page<SysHelp> findByCate(int pageNo,int pageSize,String cate){
-        Sort sort = new Sort(new Sort.Order(Sort.Direction.DESC, "sort"));
-        Pageable pageable = new PageRequest(pageNo - 1, pageSize, sort);
+    public Page<SysHelp> findByCate(int pageNo, int pageSize, String cate) {
+        Sort sort = Sort.by("sort").descending();
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
         Specification specification = new Specification() {
             List<javax.persistence.criteria.Predicate> predicates = new ArrayList<>();
 
             @Override
             public javax.persistence.criteria.Predicate toPredicate(Root root, CriteriaQuery criteriaQuery, CriteriaBuilder criteriaBuilder) {
-                predicates.add(criteriaBuilder.equal(root.get("SysHelpClassification"),cate));
-                predicates.add(criteriaBuilder.equal(root.get("isTop"),"0"));
+                predicates.add(criteriaBuilder.equal(root.get("SysHelpClassification"), cate));
+                predicates.add(criteriaBuilder.equal(root.get("isTop"), "0"));
                 return criteriaBuilder.and(predicates.toArray(new javax.persistence.criteria.Predicate[predicates.size()]));
             }
         };
-        return sysHelpDao.findAll(specification,pageable);
+        return sysHelpDao.findAll(specification, pageable);
     }
-
-
 
 
 }

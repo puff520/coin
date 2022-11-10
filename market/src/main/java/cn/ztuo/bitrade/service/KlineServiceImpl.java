@@ -50,7 +50,7 @@ public class KlineServiceImpl implements KlineService {
     public List<KlineDO> queryFrom(long from, String symbol, String type) {
         Query query = new Query();
         query.addCriteria(Criteria.where("kTime").lt(from).and("symbol").is(symbol).and("kType").is(type))
-                .with(new Sort(Sort.Direction.DESC,"kTime"))
+                .with( Sort.by(Sort.Direction.DESC,"kTime"))
                 .limit(200);
         List<KlineDO> list = mongoTemplate.find(query, KlineDO.class);
         return list;

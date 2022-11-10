@@ -30,33 +30,34 @@ import java.util.List;
  */
 @Service
 public class MemberBonusService extends BaseService<MemberBonusDTO> {
-    
+
     @Autowired
     private MemberBonusDao memberBonusDao;
-    
-    public List<MemberBonusDTO> getBonusByMemberId(long memberId){
+
+    public List<MemberBonusDTO> getBonusByMemberId(long memberId) {
         return memberBonusDao.getBonusByMemberId(memberId);
     }
-    
-    public BigDecimal getBonusAmountByMemberId(long memberId){
+
+    public BigDecimal getBonusAmountByMemberId(long memberId) {
         return memberBonusDao.getBonusAmountByMemberId(memberId);
     }
 
     public MemberBonusDTO save(MemberBonusDTO memberBonusDTO) {
         return memberBonusDao.save(memberBonusDTO);
     }
+
     //通过memberId进行查询并分页
     public Page<MemberBonusDTO> getBonusByMemberIdPage(long memberId, Integer pageNo, Integer pageSize) {
-        Sort orders = Criteria.sortStatic("id.desc");
-        PageRequest pageRequest = new PageRequest(pageNo, pageSize, orders);
+        Sort orders = Sort.by("id").descending();
+        PageRequest pageRequest = PageRequest.of(pageNo, pageSize, orders);
         Criteria<MemberBonusDTO> criteria = new Criteria<MemberBonusDTO>();
-        criteria.add(Restrictions.eq("memberId",memberId,false));
-        return memberBonusDao.findAll(criteria,pageRequest);
+        criteria.add(Restrictions.eq("memberId", memberId, false));
+        return memberBonusDao.findAll(criteria, pageRequest);
     }
 
-    public  Page<MemberBonusDTO> getMemberBounsPage(Integer pageNo,Integer pageSize){
-        Sort orders =Criteria.sortStatic("id.desc");
-        PageRequest pageRequest=new PageRequest(pageNo,pageSize,orders);
-        return  memberBonusDao.findAll(pageRequest);
+    public Page<MemberBonusDTO> getMemberBounsPage(Integer pageNo, Integer pageSize) {
+        Sort orders = Sort.by("id").descending();
+        PageRequest pageRequest = PageRequest.of(pageNo, pageSize, orders);
+        return memberBonusDao.findAll(pageRequest);
     }
 }

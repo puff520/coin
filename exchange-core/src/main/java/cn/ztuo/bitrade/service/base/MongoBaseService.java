@@ -30,8 +30,9 @@ public class MongoBaseService<T> {
      * @return
      */
     public Pagenation page(PageParam pageParam , Query query, Class<T> cla, String collectionName ){
+        Sort sort =  cn.ztuo.bitrade.pagination.Criteria.sortStatic2(pageParam.getDirection(),pageParam.getOrders());
         if(pageParam.getOrders()!=null&&pageParam.getDirection()!=null) {
-            query.with(new Sort(pageParam.getDirection(),pageParam.getOrders()));
+            query.with(sort);
         }
         long total  = mongoTemplate.count(query,cla,collectionName);
         query.limit(pageParam.getPageSize()).skip((pageParam.getPageNo()-1)*pageParam.getPageSize());

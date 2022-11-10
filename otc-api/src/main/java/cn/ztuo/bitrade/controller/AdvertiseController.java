@@ -18,7 +18,6 @@ import cn.ztuo.bitrade.util.BindingResultUtil;
 import cn.ztuo.bitrade.util.Md5;
 import cn.ztuo.bitrade.util.MessageResult;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -27,6 +26,7 @@ import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import static cn.ztuo.bitrade.constant.PayMode.*;
