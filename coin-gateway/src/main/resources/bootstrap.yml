@@ -1,5 +1,16 @@
+server:
+  port: 9000
+
 spring:
   main:
     allow-bean-definition -overriding: true
   profiles:
-    active: devtest
+    active: dev
+  application:
+    name: coin-gateway
+  cloud:
+    nacos:
+      # 注册中心
+      discovery:
+        server-addr: http://45.207.55.209:8848
+        namespace: coin-dev

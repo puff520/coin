@@ -8,6 +8,6 @@ spring:
     nacos:
       # 注册中心
       discovery:
-        server-addr: http://172.31.100.66:8848
-        namespace: coin-dev
+        server-addr: http://45.207.55.209:8848
+        namespace: coin-prod
 

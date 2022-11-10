@@ -1,10 +1,15 @@
 package cn.ztuo.bitrade.huobi.service;
 
+import cn.ztuo.bitrade.business.MarketBusiness;
+import cn.ztuo.bitrade.entity.CoinThumb;
 import cn.ztuo.bitrade.huobi.AbstractWebsocketServer;
 import cn.ztuo.bitrade.huobi.Constant;
 import cn.ztuo.bitrade.huobi.entity.DetailDO;
 import cn.ztuo.bitrade.huobi.entity.KlineDO;
 import cn.ztuo.bitrade.huobi.proto.Response;
+import cn.ztuo.bitrade.processor.CoinProcessor;
+import cn.ztuo.bitrade.processor.CoinProcessorFactory;
+import cn.ztuo.bitrade.processor.DefaultCoinProcessor;
 import cn.ztuo.bitrade.service.KlineService;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -18,6 +23,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
@@ -39,6 +45,10 @@ public class HuobiServiceImpl implements HuobiService {
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+    @Autowired
+    private MarketBusiness marketBusiness;
+    @Autowired
+    private CoinProcessorFactory coinProcessorFactory;
 
     @Override
     public void onReceive(String message) {
@@ -90,8 +100,14 @@ public class HuobiServiceImpl implements HuobiService {
         detailDO.setPair(pair);
         detailDO.setSymbol(symbol);
         AbstractWebsocketServer.senMessage(detailDO, ch, "detail", AbstractWebsocketServer.detailPool);
-        //pushMessageToChannel(detailDO, ch, "detail", AbstractWebsocketServer.detailPool);
-        redisTemplate.opsForValue().set(String.format(Constant.TICKER_KEY, pair), JSON.toJSONString(detailDO));
+
+        CoinThumb coinThumb = new CoinThumb();
+        coinThumb.setClose(new BigDecimal(1));
+//        CoinProcessor processor = new DefaultCoinProcessor(symbol, "USDT",detailDO);
+//        marketBusiness.processMarket(symbol,processor);
+        CoinProcessor processor = coinProcessorFactory.getProcessor(symbol);
+        processor.modifyThumb(detailDO);
+//       redisTemplate.opsForValue().set(String.format(Constant.TICKER_KEY, pair), JSON.toJSONString(detailDO));
     }
 
 

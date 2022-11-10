@@ -1,10 +1,9 @@
 server:
-  context-path: /admin
   port: 6010
 
 spring:
   application:
-    name: admin
+    name: coin-admin
   session:
     store-type: none
 

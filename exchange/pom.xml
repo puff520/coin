@@ -27,8 +27,11 @@
         </dependency>
         <dependency>
             <groupId>cn.ztuo.bitrade</groupId>
+            <artifactId>core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.ztuo.bitrade</groupId>
             <artifactId>exchange-core</artifactId>
-            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>

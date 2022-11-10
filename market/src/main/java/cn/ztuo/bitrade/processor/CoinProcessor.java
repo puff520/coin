@@ -5,6 +5,7 @@ import cn.ztuo.bitrade.entity.CoinThumb;
 import cn.ztuo.bitrade.entity.ExchangeTrade;
 import cn.ztuo.bitrade.entity.KLine;
 import cn.ztuo.bitrade.handler.MarketHandler;
+import cn.ztuo.bitrade.huobi.entity.DetailDO;
 import cn.ztuo.bitrade.service.MarketService;
 
 import java.util.List;
@@ -39,6 +40,8 @@ public interface CoinProcessor {
     void autoGenerate();
 
     void resetThumb();
+
+    void modifyThumb(DetailDO detailDO);
 
     void setExchangeRate(CoinExchangeRate coinExchangeRate);
 

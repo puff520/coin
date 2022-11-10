@@ -1,6 +1,8 @@
 package cn.ztuo.bitrade.processor;
 
 
+import cn.hutool.core.util.ObjectUtil;
+import cn.ztuo.bitrade.huobi.entity.DetailDO;
 import com.alibaba.fastjson.JSON;
 
 import cn.ztuo.bitrade.component.CoinExchangeRate;
@@ -124,13 +126,23 @@ public class DefaultCoinProcessor implements CoinProcessor {
     }
 
     @Override
+    public void modifyThumb(DetailDO detailDO) {
+        if (ObjectUtil.isNotEmpty(coinThumb) && ObjectUtil.isNotEmpty(detailDO)) {
+            coinThumb.setClose(new BigDecimal(detailDO.getClose()));
+            coinThumb.setOpen(new BigDecimal(detailDO.getOpen()));
+            coinThumb.setHigh(new BigDecimal(detailDO.getHigh()));
+            coinThumb.setLow(new BigDecimal(detailDO.getLow()));
+        }
+    }
+
+    @Override
     public void setExchangeRate(CoinExchangeRate coinExchangeRate) {
         this.coinExchangeRate = coinExchangeRate;
     }
 
     @Override
     public void update24HVolume(long time) {
-        if(coinThumb!=null) {
+        if (coinThumb != null) {
             synchronized (coinThumb) {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(time);
@@ -144,12 +156,12 @@ public class DefaultCoinProcessor implements CoinProcessor {
 
     @Override
     public void initializeUsdRate() {
-        logger.info("symbol = {} ,baseCoin = {}",this.symbol,this.baseCoin);
+        logger.info("symbol = {} ,baseCoin = {}", this.symbol, this.baseCoin);
         BigDecimal baseUsdRate = coinExchangeRate.getUsdRate(baseCoin);
         coinThumb.setBaseUsdRate(baseUsdRate);
-        logger.info("setBaseUsdRate = ",baseUsdRate);
+        logger.info("setBaseUsdRate = ", baseUsdRate);
         BigDecimal multiply = coinThumb.getClose().multiply(coinExchangeRate.getUsdRate(baseCoin));
-        logger.info("setUsdRate = ",multiply);
+        logger.info("setUsdRate = ", multiply);
         coinThumb.setUsdRate(multiply);
     }
 
@@ -158,7 +170,7 @@ public class DefaultCoinProcessor implements CoinProcessor {
     public void autoGenerate() {
         DateFormat df = new SimpleDateFormat("HH:mm:ss");
         logger.info("auto generate 1min kline in {},data={}", df.format(new Date(currentKLine.getTime())), JSON.toJSONString(currentKLine));
-        if(coinThumb != null) {
+        if (coinThumb != null) {
             synchronized (currentKLine) {
                 //没有成交价时存储上一笔成交价
                 if (currentKLine.getOpenPrice().compareTo(BigDecimal.ZERO) == 0) {

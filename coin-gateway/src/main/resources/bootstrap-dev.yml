@@ -1,13 +1,109 @@
-server:
-  port: 9000
-
 spring:
-  application:
-    name: coin-gateway
-  cloud:
-    nacos:
-      # 注册中心
-      discovery:
-        server-addr: http://172.31.100.66:8848
-        namespace: coin-dev
 
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Chongqing
+
+  redis:
+    database: 0
+    host: 194.41.36.123
+    password: Wrhwiydk6Z2
+    port: 6379
+    timeout: 30000
+    pool:
+      # 连接池最大连接数（使用负值表示没有限制）
+      maxactive: 64
+      # 连接池中的最大空闲连接
+      maxidle: 64
+      # 连接池最大阻塞等待时间（使用负值表示没有限制）
+      maxwait: -1
+      # 连接池中的最小空闲连接
+      minidle: 1
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true # 启用服务发现
+          lower-case-service-id: true
+      routes:
+        - id: 系统服务
+          uri: lb://coin-admin
+          predicates:
+            - Path=/coin-admin/**
+          filters:
+            - StripPrefix=1
+        - id: 用户服务
+          uri: lb://coin-user
+          predicates:
+            - Path=/coin-user/**
+          filters:
+            - StripPrefix=1
+        - id: 行情服务
+          uri: lb://coin-market
+          predicates:
+            - Path=/coin-market**
+          filters:
+            - StripPrefix=1
+        - id: 交易服务
+          uri: lb://coin-exchange
+          predicates:
+            - Path=/coin-exchange/**
+          filters:
+            - StripPrefix=1
+        - id: 钱包服务
+          uri: lb://coin-wallet
+          predicates:
+            - Path=/coin-wallet/**
+          filters:
+            - StripPrefix=1
+        - id: 通讯服务
+          uri: lb://coin-chat
+          predicates:
+            - Path=/coin-chat/**
+          filters:
+            - StripPrefix=1
+
+security:
+  ignoreUrls:
+    - /webjars/**
+    - /doc.html
+    - /swagger-resources/**
+    - /*/v2/api-docs
+    - /coin-admin/**
+    - /coin-user/**
+    - /coin-market/**
+    - /coin-exchange/**
+    - /coin-wallet/**
+    - /coin-chat/**
+
+# 是否开启本地缓存
+local-cache:
+  enabled: false
+
+# 全局参数设置
+ribbon:
+  ReadTimeout: 120000
+  ConnectTimeout: 10000
+  SocketTimeout: 10000
+  MaxAutoRetries: 0
+  MaxAutoRetriesNextServer: 1
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 40000
+
+
+feign:
+  httpclient:
+    enabled: true
+    connection-timeout: 3000
+  okhttp:
+    enabled: false
+  circuitbreaker:
+    enabled: true
+  sentinel:  # 开启feign对sentinel的支持
+    enabled: true

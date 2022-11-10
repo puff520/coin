@@ -16,15 +16,13 @@
 		<module>coin-gateway</module>
 		<module>core</module>
 		<module>exchange-core</module>
-		<module>exchange-api</module>
-		<module>netty-parent</module>
+		<module>aqmd-push</module>
 		<module>admin</module>
 		<module>wallet</module>
 		<module>exchange</module>
 		<module>market</module>
 		<module>chat</module>
-		<module>otc-api</module>
-		<module>ucenter-api</module>
+		<module>ucenter</module>
 	</modules>
 
 	<parent>

@@ -201,7 +201,7 @@ public class GatewayLogFilter implements GlobalFilter, Ordered {
                     Date now = new Date();
                     String responseTime = DateUtil.format(now, DatePattern.NORM_DATETIME_MS_PATTERN);
                     traceLog.setResponseTime(responseTime);
-                    long executeTime = DateUtil.betweenMs(DateUtil.parse(traceLog.getRequestTime(), DatePattern.NORM_DATETIME_MS_FORMATTER), now);
+                    long executeTime = DateUtil.betweenMs(DateUtil.parse(traceLog.getRequestTime(), DatePattern.NORM_DATETIME_FORMATTER), now);
                     traceLog.setExecuteTime(executeTime);
 
                     String originalResponseContentType = exchange.getAttribute(ServerWebExchangeUtils.ORIGINAL_RESPONSE_CONTENT_TYPE_ATTR);
