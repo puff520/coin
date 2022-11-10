@@ -2,7 +2,6 @@ package cn.ztuo.bitrade.consumer;
 
 import cn.ztuo.bitrade.constant.WithdrawStatus;
 import cn.ztuo.bitrade.entity.WithdrawRecord;
-import com.alibaba.druid.util.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
@@ -13,6 +12,7 @@ import cn.ztuo.bitrade.service.MemberWalletService;
 import cn.ztuo.bitrade.service.WithdrawRecordService;
 import cn.ztuo.bitrade.util.MessageResult;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

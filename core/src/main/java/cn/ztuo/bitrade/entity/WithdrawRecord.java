@@ -2,14 +2,12 @@ package cn.ztuo.bitrade.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import cn.ztuo.bitrade.constant.AuditStatus;
 import cn.ztuo.bitrade.constant.BooleanEnum;
 import cn.ztuo.bitrade.constant.WithdrawStatus;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import javax.security.auth.message.AuthStatus;
 import java.math.BigDecimal;
 import java.util.Date;
 

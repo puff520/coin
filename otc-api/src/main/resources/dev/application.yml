@@ -6,7 +6,8 @@ spring:
   application:
     name: otc
   session:
-    store-type: none
+    timeout: 60
+    store-type: redis
 
   datasource:
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
@@ -30,31 +31,6 @@ spring:
     port: 6379
     timeout: 30000
 
-  #kafka
-  kafka:
-    bootstrap-servers: 194.41.36.123:9092
-    producer:
-      batch:
-        size: 256 # \u6BCF\u6B21\u6279\u5904\u7406\u7684\u5927\u5C0F
-      buffer:
-        memory: 1048576 # \u7F13\u5B58\u6570\u636E\u7684\u5185\u5B58\u5927\u5C0F
-      linger: 1 #linger\u6307\u5B9A\u7684\u65F6\u95F4\u7B49\u5F85\u66F4\u591A\u7684records\u51FA\u73B0
-      retries: 0 # \u91CD\u4F20\u6B21\u6570
-    consumer:
-      auto:
-        commit:
-          interval: 100
-        offset:
-          reset: earliest
-      concurrency: 9
-      enable:
-        auto:
-          commit: false
-      group:
-        id: default-group
-      maxPollRecordsConfig: 50
-      session:
-        timeout: 15000
 
 decorator:
   datasource:

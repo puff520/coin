@@ -1,6 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>cn.ztuo.bitrade</groupId>
 	<artifactId>bitrade-parent</artifactId>
@@ -12,17 +14,16 @@
 	<url>https://bhuo.top/#/</url>
 	<modules>
 		<module>core</module>
+		<module>exchange-core</module>
+		<module>exchange-api</module>
+		<module>netty-parent</module>
 		<module>admin</module>
 		<module>wallet</module>
 		<module>exchange</module>
 		<module>market</module>
-		<module>exchange-core</module>
-		<module>exchange-api</module>
 		<module>chat</module>
 		<module>otc-api</module>
-		<module>otc-core</module>
 		<module>ucenter-api</module>
-		<module>netty-parent</module>
 	</modules>
 
 	<parent>
@@ -35,14 +36,17 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
 		<project.build.jdk_version>1.8</project.build.jdk_version>
 		<!-- spring -->
 		<spring-cloud.version>2020.0.5</spring-cloud.version>
 		<spring-boot_version>2.5.3</spring-boot_version>
 		<!-- 数据库连接 -->
-		<druid_version>1.1.9</druid_version>
 		<mysql.version>8.0.11</mysql.version>
 		<lock4-version>2.2.2</lock4-version>
+		<hutool.version>5.5.8</hutool.version>
+		<redisson.version>3.15.1</redisson.version>
 		<!-- commons包 -->
 		<commons-codec_version>1.10</commons-codec_version>
 		<commons-fileupload_version>1.3</commons-fileupload_version>
@@ -51,7 +55,6 @@
 		<commons-logging_version>1.1.3</commons-logging_version>
 		<commons-collections_version>3.2</commons-collections_version>
 		<!-- extension -->
-		<lombok_version>1.16.16</lombok_version>
 		<fastjson_version>1.2.31</fastjson_version>
 		<kafka_version>0.10.0.0</kafka_version>
 		<!-- Log libs -->
@@ -64,8 +67,33 @@
 		<junit_version>4.12</junit_version>
 	</properties>
 
+	<dependencies>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>cn.hutool</groupId>
+			<artifactId>hutool-all</artifactId>
+			<version>${hutool.version}</version>
+		</dependency>
+	</dependencies>
+
 	<dependencyManagement>
 		<dependencies>
+
+			<dependency>
+				<groupId>cn.ztuo.bitrade</groupId>
+				<artifactId>exchange-core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>cn.ztuo.bitrade</groupId>
+				<artifactId>core</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
@@ -118,6 +146,12 @@
 				<groupId>org.springframework.session</groupId>
 				<artifactId>spring-session</artifactId>
 				<version>1.3.5.RELEASE</version>
+			</dependency>
+			<!-- 分布式锁 -->
+			<dependency>
+				<groupId>org.redisson</groupId>
+				<artifactId>redisson</artifactId>
+				<version>${redisson.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
@@ -218,11 +252,6 @@
 				<version>${logback-ext-spring_version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.alibaba</groupId>
-				<artifactId>druid</artifactId>
-				<version>${druid_version}</version>
-			</dependency>
-			<dependency>
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
 				<version>${mysql.version}</version>
@@ -231,11 +260,6 @@
 				<groupId>com.sparkframework</groupId>
 				<artifactId>spark-core</artifactId>
 				<version>2.6.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.projectlombok</groupId>
-				<artifactId>lombok</artifactId>
-				<version>${lombok_version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.alibaba</groupId>
@@ -282,9 +306,11 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<artifactId>maven-surefire-plugin</artifactId>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
 				<configuration>
-					<skip>true</skip>
+					<aggregate>true</aggregate>
 				</configuration>
 			</plugin>
 		</plugins>

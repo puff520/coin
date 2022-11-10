@@ -10,8 +10,6 @@ import cn.ztuo.bitrade.util.GoogleAuthenticatorUtil;
 import cn.ztuo.bitrade.util.Md5;
 import cn.ztuo.bitrade.util.MessageResult;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.manager.util.SessionUtils;
-import org.apache.shiro.crypto.hash.SimpleHash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;

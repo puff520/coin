@@ -12,11 +12,11 @@ import cn.ztuo.bitrade.service.CountryService;
 import cn.ztuo.bitrade.service.LocaleMessageSourceService;
 import cn.ztuo.bitrade.service.MemberService;
 import cn.ztuo.bitrade.util.*;
+import com.google.common.io.ByteSource;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -174,7 +174,7 @@ public class RegisterController {
         //不可重复随机数
         String loginNo = String.valueOf(idWorkByTwitter.nextId());
         //盐
-        String credentialsSalt = ByteSource.Util.bytes(loginNo).toHex();
+        String credentialsSalt = "1111";
         //生成密码
         String password = Md5.md5Digest(loginByEmail.getPassword() + credentialsSalt).toLowerCase();
         Member member = new Member();
@@ -311,7 +311,7 @@ public class RegisterController {
         //不可重复随机数
         String loginNo = String.valueOf(idWorkByTwitter.nextId());
         //盐
-        String credentialsSalt = ByteSource.Util.bytes(loginNo).toHex();
+        String credentialsSalt = "1111";
         //生成密码
         String password = Md5.md5Digest(loginByPhone.getPassword() + credentialsSalt).toLowerCase();
         Member member = new Member();

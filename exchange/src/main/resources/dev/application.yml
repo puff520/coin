@@ -1,12 +1,13 @@
 server:
-  context-path: /service-exchange-trade
+  context-path: /exchange-trade
   port: 6005
 
 spring:
   application:
-    name: service-exchange-trade
+    name: exchange-trade
   session:
-    store-type: none
+    timeout: 60
+    store-type: redis
 
   datasource:
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver

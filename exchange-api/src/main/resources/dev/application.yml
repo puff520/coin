@@ -1,12 +1,13 @@
 server:
-  context-path: /exchange
+  context-path: /exchange-api
   port: 6003
 
 spring:
   application:
-    name: exchange
+    name: exchange-api
   session:
-    store-type: none
+    timeout: 60
+    store-type: redis
 
   datasource:
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver

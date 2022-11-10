@@ -51,10 +51,6 @@
             <version>1.0</version>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-        <dependency>
             <groupId>cn.ztuo.bitrade</groupId>
             <artifactId>exchange-core</artifactId>
             <version>1.0</version>
@@ -62,10 +58,6 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

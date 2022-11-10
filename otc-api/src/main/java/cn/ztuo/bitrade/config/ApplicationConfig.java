@@ -19,7 +19,7 @@ import cn.ztuo.bitrade.interceptor.MemberInterceptor;
 
 /**
  * @author Administrator
- * @see 重命名corsFilter 解决与spring security冲突问题
+ * @see 重 解决与spring security冲突问题
  */
 @Configuration
 public class ApplicationConfig extends WebMvcConfigurerAdapter {
