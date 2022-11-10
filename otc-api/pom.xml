@@ -131,7 +131,7 @@
 		<profile>
 			<id>test</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<activeByDefault>false</activeByDefault>
 			</activation>
 			<build>
 				<resources>
@@ -146,7 +146,7 @@
 			<id>prod</id>
 			<!--<properties> <project.profile>application-prod</project.profile> </properties> -->
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<activeByDefault>false</activeByDefault>
 			</activation>
 			<build>
 				<resources>
