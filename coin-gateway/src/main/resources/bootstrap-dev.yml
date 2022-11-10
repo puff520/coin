@@ -1,0 +1,13 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: coin-gateway
+  cloud:
+    nacos:
+      # 注册中心
+      discovery:
+        server-addr: http://172.31.100.66:8848
+        namespace: coin-dev
+

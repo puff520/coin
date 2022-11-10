@@ -13,6 +13,7 @@
 	<description>数字货币交易系统父节点</description>
 	<url>https://bhuo.top/#/</url>
 	<modules>
+		<module>coin-gateway</module>
 		<module>core</module>
 		<module>exchange-core</module>
 		<module>exchange-api</module>
@@ -41,6 +42,7 @@
 		<project.build.jdk_version>1.8</project.build.jdk_version>
 		<!-- spring -->
 		<spring-cloud.version>2020.0.5</spring-cloud.version>
+		<spring-cloud-alibaba.version>2021.0.4.0</spring-cloud-alibaba.version>
 		<spring-boot_version>2.5.3</spring-boot_version>
 		<!-- 数据库连接 -->
 		<mysql.version>8.0.11</mysql.version>
@@ -98,6 +100,14 @@
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-dependencies</artifactId>
 				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<!--Spring Cloud & Alibaba 相关依赖-->
+			<dependency>
+				<groupId>com.alibaba.cloud</groupId>
+				<artifactId>spring-cloud-alibaba-dependencies</artifactId>
+				<version>${spring-cloud-alibaba.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
